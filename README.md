@@ -1,1 +1,1 @@
-# tetradrez_challenge
+# tatedrez_challenge
