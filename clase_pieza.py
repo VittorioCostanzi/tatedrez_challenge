@@ -14,11 +14,8 @@ class Pieza:
 
   def pieza_en_tablero(self, posicion):
       self.evaluate_input_position(posicion)
-      self.posicion_x = posicion[0]
-      self.posicion_y = int(posicion[1])
-      condition = False
+      self.posicion_x, self.posicion_y = posicion[0], int(posicion[1])
       return self.posicion_x, self.posicion_y
-
 
   def patron(self):
       if self.tipo == "caballo":

@@ -1,4 +1,4 @@
-from pieza import Pieza
+from clase_pieza import Pieza
 import pandas as pd
 import random
 
@@ -34,14 +34,12 @@ class Tablero(Pieza):
           2:self.alfil_blanco,
           3:self.torre_blanco
       }
-    elif self.turno == "Negro":
+    else:
       diccionario = {
           1:self.caballo_negro,
           2:self.alfil_negro,
           3:self.torre_negro
       }
-    else:
-      print("Error")
     return diccionario
 
   def turno_equipo(self):
@@ -49,31 +47,23 @@ class Tablero(Pieza):
       self.turno = "Negro"
     elif self.turno == "Negro":
       self.turno = "Blanco"
-    elif self.turno == None:
+    else:
       self.turno = random.choice(["Negro","Blanco"])
       return print(f"---------------------\nComienza el equipo {self.turno}")
-    else:
-      print("Error1")
     return print(f"---------------------\nTurno del equipo {self.turno}")
 
   def posible_movimiento(self, pieza):
-
-    variable = pieza.tipo
-    posicion_x = pieza.posicion_x
-    posicion_y = pieza.posicion_y
-    pos_previa_x = pieza.posicion_x
-    pos_previa_y = pieza.posicion_y
-
-    lista_posibles = [(self.cambio_variable(self.cambio_variable(posicion_x)+pieza.patron_movimiento[i][0]),posicion_y+pieza.patron_movimiento[i][1])
-                        for i in range(len(pieza.patron_movimiento)) if (self.cambio_variable(posicion_x)+pieza.patron_movimiento[i][0]) in (1,2,3)
-                        and posicion_y+pieza.patron_movimiento[i][1] in (1,2,3)]
+    
+    lista_posibles = [(self.cambio_variable(self.cambio_variable(pieza.posicion_x)+pieza.patron_movimiento[i][0]),pieza.posicion_y+pieza.patron_movimiento[i][1])
+                        for i in range(len(pieza.patron_movimiento)) if (self.cambio_variable(pieza.posicion_x)+pieza.patron_movimiento[i][0]) in (1,2,3)
+                        and pieza.posicion_y+pieza.patron_movimiento[i][1] in (1,2,3)]
 
     lista_cleaned =  [i for i in lista_posibles if self.matriz[i[0]][i[1]] is None]
     lista_cleaned_cleaned = []
 
-    if variable == "torre" or variable == "alfil":
+    if pieza.tipo != "caballo":
 
-      x, y = self.cambio_variable(posicion_x), posicion_y
+      x, y = self.cambio_variable(pieza.posicion_x), pieza.posicion_y
 
       lista_cleaned_cleaned = [i for i in lista_cleaned if ((abs(self.cambio_variable(i[0]) - x) == 1 or abs((i[1]) - y) == 1)
                                                             or (((abs(self.cambio_variable(i[0]) - x) == 2 or abs((i[1]) - y) == 2))
@@ -89,15 +79,14 @@ class Tablero(Pieza):
     numero = 0
     for i in range(3):
       if len(self.posible_movimiento(diccionario[i+1]))>0:
-        numero += 1
+        numero = 1
     return numero
 
   def insertar_pieza(self, pieza, posicion):
     pieza.pieza_en_tablero(posicion)
-    movimiento_permitido = None
+    movimiento_permitido = 1
     if self.matriz[pieza.posicion_x][pieza.posicion_y] == None:
       self.matriz[pieza.posicion_x][pieza.posicion_y] = pieza
-      movimiento_permitido = 1
     else:
       print("---------------------\nEl espacio se encuentra ocupado, elija otra posicion")
       movimiento_permitido = 0
@@ -122,7 +111,6 @@ class Tablero(Pieza):
 
   def tres_enlinea(self):
     evaluar = self.grupo_piezas()
-
     if ((None not in [evaluar[1].posicion_x, evaluar[2].posicion_x, evaluar[3].posicion_x, evaluar[1].posicion_y, evaluar[2].posicion_y, evaluar[3].posicion_y])
           and ((evaluar[1].posicion_x == evaluar[2].posicion_x == evaluar[3].posicion_x)       #Condicion para que todas las piezas tengan el mismo x
           or (evaluar[1].posicion_y == evaluar[2].posicion_y == evaluar[3].posicion_y)  #Condicion para que todas las piezas tengan el mismo y
@@ -138,6 +126,7 @@ class Tablero(Pieza):
       return 1
     else:
       return 0
+
   def mover_pieza(self):
 
     diccionario_elegido = self.grupo_piezas()
@@ -159,13 +148,11 @@ class Tablero(Pieza):
 
         else:
           condition_move2 = True
-          pos_previa_x = pieza.posicion_x
-          pos_previa_y = pieza.posicion_y
           while condition_move2:
             print("Los casilleros permitidos son los siguientes:")
             lista_casillero_elegido = []
             for elemento in self.posible_movimiento(pieza):
-              variable = f"{elemento[0]+str(elemento[1])}"
+              variable = f"{elemento[0]}{elemento[1]}"
               lista_casillero_elegido.append(variable)
               print(variable)
 
@@ -177,7 +164,7 @@ class Tablero(Pieza):
             except (ValueError, UnboundLocalError):
               print("---------------------\nEl valor ingresado no se encuentra dentro de las posibilidades")
             if self.insertar_pieza(pieza,casillero_elegido) == 1:
-              self.matriz[pos_previa_x][pos_previa_y] = None
+              self.matriz[pieza.posicion_x][pieza.posicion_y] = None
               pieza.posicion_x = casillero_elegido[0]
               pieza.posicion_y = int(casillero_elegido[1])
               condition_move = False
@@ -188,7 +175,7 @@ class Tablero(Pieza):
         continue
 
     self.consulta()
-    
+    return 1
   def insertar_piezas(self):
     diccionario = dict
     diccionario_blanco = {
@@ -215,8 +202,8 @@ class Tablero(Pieza):
 
       for elemento in diccionario_turno.items():
         print(f"{elemento[0]}.{elemento[1]}")
-      condition_eleccion = True
 
+      condition_eleccion = True
       while condition_eleccion:
         try:
           eleccion = int(input(f"---------------------\nIngrese el numero de la pieza que desea colocar en el tablero: "))
@@ -239,11 +226,11 @@ class Tablero(Pieza):
           condition_insertar = False
       del diccionario_turno[eleccion]
 
-      if contador >= 5 and self.movimientos_bloqueados() == 0:
-        break
       self.consulta()
 
-      if self.tres_enlinea() == 1 or (len(diccionario_blanco) + len(diccionario_negro)) == 0:
+      if contador >= 5 and self.movimientos_bloqueados() == 0:
+        break
+      if self.tres_enlinea() == 1 or contador == 6:
         break
 
     return self.matriz
@@ -267,5 +254,4 @@ class Tablero(Pieza):
       self.tres_enlinea()
       if self.tres_enlinea() == 1:
         print("---------------------\nGanaste!!!! Tres en linea!!!!! ")
-        condition_play = False
         return 1
