@@ -5,7 +5,6 @@ class Pieza:
     self.nombre = nombre
     self.equipo = equipo
     self.tipo = tipo
-    self.movimientos_disponibles = str
     self.patron_movimiento = list
     self.patron()
 

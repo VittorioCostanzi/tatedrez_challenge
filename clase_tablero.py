@@ -165,19 +165,17 @@ class Tablero(Pieza):
               print("---------------------\nEl valor ingresado no se encuentra dentro de las posibilidades")
             if self.insertar_pieza(pieza,casillero_elegido) == 1:
               self.matriz[pieza.posicion_x][pieza.posicion_y] = None
-              pieza.posicion_x = casillero_elegido[0]
-              pieza.posicion_y = int(casillero_elegido[1])
-              condition_move = False
-              condition_move2 = False
+              pieza.pieza_en_tablero(casillero_elegido)
+              self.consulta()
+              return 1
+
 
       except (ValueError, UnboundLocalError, KeyError):
         print("---------------------\nEl valor ingresado no se encuentra entre las posibilidades, ingrese uno que si")
         continue
 
-    self.consulta()
-    return 1
   def insertar_piezas(self):
-    diccionario = dict
+    diccionario_turno = dict
     diccionario_blanco = {
           1:self.caballo_blanco,
           2:self.alfil_blanco,

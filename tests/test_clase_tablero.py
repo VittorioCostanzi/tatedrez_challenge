@@ -34,6 +34,19 @@ def test_insertar_pieza(test_input1, test_input2, expected):
   c.matriz["a"][3] = c.alfil_blanco
   assert c.insertar_pieza(test_input1, test_input2) == expected
   
+
+@pytest.mark.parametrize("test_input, expected", [("a1", "a1"),
+                                                  ("aa", 1),
+                                                  ("a1a", 1),
+                                                  (2, 1),
+                                                  ("b4", 1),
+                                                  ("c3", "c3"),
+                                                  ("z4", 1)])
+def test_evaluate_input_position(test_input, expected, capsys):
+    c = Tablero()
+    c.evaluate_input_position(test_input)
+    assert c.evaluate_input_position(test_input) == expected
+  
 @pytest.mark.parametrize("test_input, expected", [(["1","b3"],1),(["3","c2"],1)])
 def test_mover_pieza(monkeypatch, test_input, expected):
   inputs = iter(test_input)
