@@ -7,8 +7,8 @@ class Menu:
 
   def show_menu_1(self):
       print("---------------------\nBIENVENIDO AL TETRADREZ ULTRA-3000")
-      texto = "---------------------\nMenu:\n---------------------\nIngrese el numero de la opcion que desea seleccionar"
-      print(texto)
+      print("---------------------\nMenu:")
+      print("---------------------\nIngrese el numero de la opcion que desea seleccionar")
       condition_menu_1 = True
       condicion = 0
       while condition_menu_1:
@@ -24,7 +24,7 @@ class Menu:
             continue
           elif option_selected_1 == 2:
             print("Gracias, vuelva prontos!!")
-            break
+            return 1
           else:
             print("---------------------\nEl valor ingresado no se encuentra entre las posiblidades, elija uno que se encuentre dentro de ellas")
             continue
@@ -36,3 +36,4 @@ class Menu:
       tablero = Tablero()
       tablero.jugar()
       
+Menu()

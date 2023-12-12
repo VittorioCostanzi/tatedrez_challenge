@@ -53,7 +53,6 @@ class Tablero(Pieza):
     return print(f"---------------------\nTurno del equipo {self.turno}")
 
   def posible_movimiento(self, pieza):
-    
     lista_posibles = [(self.cambio_variable(self.cambio_variable(pieza.posicion_x)+pieza.patron_movimiento[i][0]),pieza.posicion_y+pieza.patron_movimiento[i][1])
                         for i in range(len(pieza.patron_movimiento)) if (self.cambio_variable(pieza.posicion_x)+pieza.patron_movimiento[i][0]) in (1,2,3)
                         and pieza.posicion_y+pieza.patron_movimiento[i][1] in (1,2,3)]
@@ -87,6 +86,7 @@ class Tablero(Pieza):
     movimiento_permitido = 1
     if self.matriz[pieza.posicion_x][pieza.posicion_y] == None:
       self.matriz[pieza.posicion_x][pieza.posicion_y] = pieza
+      print(self.matriz)
     else:
       print("---------------------\nEl espacio se encuentra ocupado, elija otra posicion")
       movimiento_permitido = 0
@@ -139,41 +139,46 @@ class Tablero(Pieza):
         eleccion = int(input(f"---------------------\nIngrese el numero de la pieza que desea mover: "))
 
         if eleccion not in diccionario_elegido.keys():
-          print("---------------------\nEl valor ingresado no se encuentra entre las posibilidades, ingrese uno que si")
+          print("El valor ingresado no se encuentra entre las posibilidades, ingrese uno que si")
           continue
         pieza = diccionario_elegido[eleccion]
 
         if len(self.posible_movimiento(pieza)) == 0:
-          print("---------------------\nNo es posible mover esta pieza, elija otra")
+          print("No es posible mover esta pieza, elija otra")
 
         else:
           condition_move2 = True
+          pos_previa_x = pieza.posicion_x
+          pos_previa_y = pieza.posicion_y
           while condition_move2:
-            print("Los casilleros permitidos son los siguientes:")
+            print("Los casilleros permitos son los siguientes:")
             lista_casillero_elegido = []
             for elemento in self.posible_movimiento(pieza):
-              variable = f"{elemento[0]}{elemento[1]}"
+              variable = f"{elemento[0]+str(elemento[1])}"
               lista_casillero_elegido.append(variable)
               print(variable)
 
             try:
-              casillero_elegido = input("---------------------\nIngrese el casillero al que desea mover la pieza seleccionada:")
+              casillero_elegido = input("Ingrese el casillero al que desea mover la pieza seleccionada:")
               if casillero_elegido not in lista_casillero_elegido:
-                print("---------------------\nEl valor ingresado no se encuentra dentro de las posibilidades")
+                print("El valor ingresado no se encuentra dentro de las posibilidades")
                 continue
             except (ValueError, UnboundLocalError):
-              print("---------------------\nEl valor ingresado no se encuentra dentro de las posibilidades")
+              print("El valor ingresado no se encuentra dentro de las posibilidades")
             if self.insertar_pieza(pieza,casillero_elegido) == 1:
-              self.matriz[pieza.posicion_x][pieza.posicion_y] = None
-              pieza.pieza_en_tablero(casillero_elegido)
-              self.consulta()
-              return 1
-
+              self.matriz[pos_previa_x][pos_previa_y] = None
+              pieza.posicion_x = casillero_elegido[0]
+              pieza.posicion_y = int(casillero_elegido[1])
+              condition_move = False
+              condition_move2 = False
 
       except (ValueError, UnboundLocalError, KeyError):
-        print("---------------------\nEl valor ingresado no se encuentra entre las posibilidades, ingrese uno que si")
+        print("El valor ingresado no se encuentra entre las posibilidades, ingrese uno que si")
         continue
 
+    self.consulta()
+
+  
   def insertar_piezas(self):
     diccionario_turno = dict
     diccionario_blanco = {
