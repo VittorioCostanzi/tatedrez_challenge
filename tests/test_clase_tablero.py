@@ -47,7 +47,9 @@ def test_evaluate_input_position(test_input, expected, capsys):
     c.evaluate_input_position(test_input)
     assert c.evaluate_input_position(test_input) == expected
   
-@pytest.mark.parametrize("test_input, expected", [(["1","b3"],1),(["3","c2"],1)])
+@pytest.mark.parametrize("test_input, expected", [(["1", "b3"], "Caballo Negro"),
+                                                  (["4", "3", "c3"], "Torre Negra"),
+                                                  (["2", "3", "b1","c2"], "Torre Negra")])
 def test_mover_pieza(monkeypatch, test_input, expected):
   inputs = iter(test_input)
   c = Tablero()
@@ -55,11 +57,21 @@ def test_mover_pieza(monkeypatch, test_input, expected):
   c.caballo_negro.posicion_y = 1
   c.insertar_pieza(c.caballo_negro, "a1")
   c.turno = "Negro"
-  c.torre_negro.posicion_x = "a"
-  c.torre_negro.posicion_y = 2
-  c.insertar_pieza(c.torre_negro, "a2")
+  c.torre_negro.posicion_x = "c"
+  c.torre_negro.posicion_y = 1
+  c.insertar_pieza(c.torre_negro, "c1")
+  c.alfil_negro.posicion_x = "a"
+  c.alfil_negro.posicion_y = 3
+  c.insertar_pieza(c.alfil_negro, "a3")
+  c.torre_blanco.posicion_x = "b"
+  c.torre_blanco.posicion_y = 1
+  c.insertar_pieza(c.torre_blanco, "b1")
+  c.alfil_blanco.posicion_x = "b"
+  c.alfil_blanco.posicion_y = 2
+  c.insertar_pieza(c.alfil_blanco, "b2")
   monkeypatch.setattr("builtins.input", lambda _: next(inputs))
-  assert c.mover_pieza() == expected
+  c.mover_pieza()
+  assert str(c.matriz[test_input[-1][0]][int(test_input[-1][1])]) == expected
 
 @pytest.mark.parametrize("test_input, expected", [(["2", "a3", "1", "c3", "1", "b2", "3", "c1", "3", "a1", "2", "a2"],
                                                   str(pd.DataFrame(np.array([[Tablero().torre_blanco, None, Tablero().torre_negro],
@@ -123,8 +135,6 @@ def test_posible_movimiento(monkeypatch, test_input, expected):
   c.turno_equipo()
   assert c.posible_movimiento(c.grupo_piezas()[test_input]) == expected
 
-
-
 @pytest.mark.parametrize("test_input, expected, expected2", [
                         ("Negro",f"---------------------\nTurno del equipo Blanco\n", "Blanco"),
                         ("Blanco",f"---------------------\nTurno del equipo Negro\n", "Negro")])
@@ -148,7 +158,7 @@ def test_grupo_piezas(test_input, expected1, expected2, expected3):
 @pytest.mark.parametrize("test_input, expected", [(["1", "a1", "1", "b2", "2", "a2", "3", "b1", "3", "c3", "2", "b3"],1),     #Tres en linea
                                                   (["1", "a3", "1", "a1", "2", "a2", "3", "b2", "3", "c1", "2", "c3"],1),     #Tres en linea
                                                   (["1", "b2", "1", "b1", "2", "a1", "3", "a3", "3", "a2", "2", "c3"],0),
-                                                  (["1", "b1", "1", "a1", "2", "b3", "3", "c2", "3", "c1", "2", "b2", "2", "a2", "2", "c3", "1", "a3", "3", "c3"],1),
+                                                  (["1", "b1", "1", "a1", "2", "b3", "3", "c2", "3", "c1", "2", "b2", "2", "a2", "2", "c3", "1", "a3", "3", "b2"],1),
                                                   (["1", "b2", "1", "b1", "2", "a1", "3", "b3", "3", "a3", "2", "c3", "3", "r4", "a2", "3", "a3"],0)])    #Movimientos bloqueados
 def test_jugar(monkeypatch, test_input, expected, capsys):
   tablero = Tablero()

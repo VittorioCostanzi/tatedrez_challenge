@@ -35,5 +35,4 @@ class Menu:
   def iniciar_juego(self):
       tablero = Tablero()
       tablero.jugar()
-      
-Menu()
+      return 1

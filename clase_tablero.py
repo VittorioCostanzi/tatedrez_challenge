@@ -178,7 +178,7 @@ class Tablero(Pieza):
 
     self.consulta()
 
-  
+
   def insertar_piezas(self):
     diccionario_turno = dict
     diccionario_blanco = {
@@ -258,3 +258,4 @@ class Tablero(Pieza):
       if self.tres_enlinea() == 1:
         print("---------------------\nGanaste!!!! Tres en linea!!!!! ")
         return 1
+      
