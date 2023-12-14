@@ -179,7 +179,7 @@ class Tablero(Pieza):
     self.consulta()
 
 
-  def insertar_piezas(self):
+  def insertar_piezas_en_tablero(self):
     diccionario_turno = dict
     diccionario_blanco = {
           1:self.caballo_blanco,
@@ -241,7 +241,7 @@ class Tablero(Pieza):
   def jugar(self):
     condition_play = True
     self.consulta()
-    self.insertar_piezas()
+    self.insertar_piezas_en_tablero()
     if self.movimientos_bloqueados() == 0:
       print("---------------------\nLas piezas se encuentran bloqueadas, finaliza el juego")
       return 0

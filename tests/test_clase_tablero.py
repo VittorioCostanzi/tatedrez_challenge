@@ -18,7 +18,7 @@ def test_consulta(monkeypatch, expected, capsys):
   inputs = iter(["2", "b2", "1", "b3", "1", "a3", "3", "c1", "3", "a1", "2", "a2"])
   monkeypatch.setattr("builtins.input", lambda _: next(inputs))
   with capsys.disabled():
-    c.insertar_piezas()
+    c.insertar_piezas_en_tablero()
   c.consulta()
   captured = capsys.readouterr().out.split("\n")
   assert captured == expected
@@ -68,12 +68,12 @@ def test_mover_pieza(monkeypatch, test_input, expected):
                                                   str(pd.DataFrame(np.array([[Tablero().torre_blanco, None, Tablero().torre_negro],
                                                   [Tablero().alfil_negro, Tablero().caballo_blanco, None],
                                                   [Tablero().alfil_blanco, None, Tablero().caballo_negro]]), columns=['a', 'b', 'c'], index=[1,2,3])))])
-def test_insertar_piezas(monkeypatch, test_input, expected):
+def test_insertar_piezas_en_tablero(monkeypatch, test_input, expected):
   inputs = iter(test_input)
   c = Tablero()
   c.turno = "Negro"
   monkeypatch.setattr("builtins.input", lambda _: next(inputs))
-  assert str(c.insertar_piezas()) == expected
+  assert str(c.insertar_piezas_en_tablero()) == expected
 
 
 
@@ -85,7 +85,7 @@ def test_movimientos_bloqueados(monkeypatch, test_input, expected):
   c.turno = "Negro"
   inputs = iter(test_input)
   monkeypatch.setattr("builtins.input", lambda _: next(inputs))
-  c.insertar_piezas()
+  c.insertar_piezas_en_tablero()
   c.turno = "Blanco"
   assert c.movimientos_bloqueados() == expected
 
@@ -100,7 +100,7 @@ def test_tres_enlinea(monkeypatch, test_input, expected):
   c = Tablero()
   inputs = iter(test_input)
   monkeypatch.setattr("builtins.input", lambda _: next(inputs))
-  c.insertar_piezas()
+  c.insertar_piezas_en_tablero()
   assert c.tres_enlinea() == expected
 
 @pytest.mark.parametrize("test_input, expected",
@@ -118,7 +118,7 @@ def test_posible_movimiento(monkeypatch, test_input, expected):
   c = Tablero()
   inputs = iter(["2", "b2", "1", "b3", "1", "a3", "3", "c1", "3", "a1", "2", "a2"])
   monkeypatch.setattr("builtins.input", lambda _: next(inputs))
-  c.insertar_piezas()
+  c.insertar_piezas_en_tablero()
   c.turno_equipo()
   assert c.posible_movimiento(c.grupo_piezas()[test_input]) == expected
 
