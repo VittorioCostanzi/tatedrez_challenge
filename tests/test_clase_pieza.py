@@ -30,3 +30,15 @@ def test_patron(test_input1, test_input2, test_input3, expected):
 def test_pieza_en_tablero(test_input, expected):
     c = Pieza("Negro", "caballo", "Caballo Negro")
     assert c.pieza_en_tablero(test_input) == expected
+    
+@pytest.mark.parametrize("test_input, expected", [("a1", "a1"),
+                                                ("aa", 1),
+                                                ("a1a", 1),
+                                                (2, 1),
+                                                ("b4", 1),
+                                                ("c3", "c3"),
+                                                ("z4", 1)])
+def test_evaluate_input_position(test_input, expected):
+    c = Pieza("Negro", "caballo", "Caballo Negro")
+    c.evaluate_input_position(test_input)
+    assert c.evaluate_input_position(test_input) == expected

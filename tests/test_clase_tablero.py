@@ -34,20 +34,7 @@ def test_insertar_pieza(test_input1, test_input2, expected):
   c.matriz["a"][3] = c.alfil_blanco
   assert c.insertar_pieza(test_input1, test_input2) == expected
   
-
-@pytest.mark.parametrize("test_input, expected", [("a1", "a1"),
-                                                ("aa", 1),
-                                                ("a1a", 1),
-                                                (2, 1),
-                                                ("b4", 1),
-                                                ("c3", "c3"),
-                                                ("z4", 1)])
-def test_evaluate_input_position(test_input, expected, capsys):
-    c = Tablero()
-    c.evaluate_input_position(test_input)
-    assert c.evaluate_input_position(test_input) == expected
-  
-@pytest.mark.parametrize("test_input, expected", [(["1", "b3"], "Caballo Negro"),
+@pytest.mark.parametrize("test_input, expected", [(["r","1", "b3"], "Caballo Negro"),
                                                   (["4", "3", "c3"], "Torre Negra"),
                                                   (["2", "3", "b1","c2"], "Torre Negra")])
 def test_mover_pieza(monkeypatch, test_input, expected):
@@ -91,7 +78,7 @@ def test_insertar_piezas(monkeypatch, test_input, expected):
 
 
 @pytest.mark.parametrize("test_input, expected",[
-                        (["1", "b2", "1", "b1", "2", "a1", "3", "a3", "3", "a2", "2", "c3"],0),
+                        (["r","4","1", "b2", "1", "b1", "2", "a1", "3", "a3", "3", "a2", "2", "c3"],0),
                         (["1", "b2", "1", "b1", "2", "a1", "3", "b3", "3", "a2", "2", "c3"],1)])
 def test_movimientos_bloqueados(monkeypatch, test_input, expected):
   c = Tablero()
@@ -159,8 +146,9 @@ def test_grupo_piezas(test_input, expected1, expected2, expected3):
                                                   (["1", "a3", "1", "a1", "2", "a2", "3", "b2", "3", "c1", "2", "c3"],1),     #Tres en linea
                                                   (["1", "b2", "1", "b1", "2", "a1", "3", "a3", "3", "a2", "2", "c3"],0),
                                                   (["1", "b1", "1", "a1", "2", "b3", "3", "c2", "3", "c1", "2", "b2", "2", "a2", "2", "c3", "1", "a3", "3", "b2"],1),
-                                                  (["1", "b2", "1", "b1", "2", "a1", "3", "b3", "3", "a3", "2", "c3", "3", "r4", "a2", "3", "a3"],0)])    #Movimientos bloqueados
-def test_jugar(monkeypatch, test_input, expected, capsys):
+                                                  (["1", "b2", "1", "b1", "2", "a1", "3", "b3", "3", "a3", "2", "c3", "3", "r4", "a2", "3", "a3"],0),
+                                                  (["1", "b2", "1", "b1", "2", "a1", "3", "b3", "3", "a3", "2", "c3", "3", "a2", "3", "a3"],0),])    #Movimientos bloqueados
+def test_jugar(monkeypatch, test_input, expected):
   tablero = Tablero()
   inputs = iter(test_input)
   monkeypatch.setattr("builtins.input", lambda _: next(inputs))
