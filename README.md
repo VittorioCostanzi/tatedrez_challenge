@@ -1,5 +1,4 @@
 <h1 align="center"> Tatedrez Challenge </h1>
-![Imagen](https://github.com/VittorioCostanzi/tatedrez_challenge/assets/116321526/a077c8a7-76a5-43b1-9348-1d4d0c7e9d4b)
 
 <h2 align="center"> Descripción del Proyecto </h2>
 El proyecto consiste en una aplicacion que permita jugar al TA-TE-DREZ. El mismo combina a dos de los más difundidos juegos de tablero en el mundo: el tatetí o "tres en fila", y el ajedrez. De esta forma se mezclan dos de los juegos de estrategia más antiguos e igualmente de los más difundidos en el mundo, formando uno solo: el Tatedréz. Se trata más de una variante complejizada del tres en línea que una versión simplificada del ajedréz. La idea está basada en combinar el tablero del tatetí, las piezas de ajedrez, los movimientos de ajedrez, y objetivo de tatetí.
