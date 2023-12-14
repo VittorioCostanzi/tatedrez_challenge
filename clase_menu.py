@@ -36,3 +36,6 @@ class Menu:
       tablero = Tablero()
       tablero.jugar()
       return 1
+
+if __name__ == "__main__":
+  Menu()

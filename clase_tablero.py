@@ -86,7 +86,7 @@ class Tablero(Pieza):
     movimiento_permitido = 1
     if self.matriz[pieza.posicion_x][pieza.posicion_y] == None:
       self.matriz[pieza.posicion_x][pieza.posicion_y] = pieza
-      print(self.matriz)
+      #print(self.matriz)
     else:
       print("---------------------\nEl espacio se encuentra ocupado, elija otra posicion")
       movimiento_permitido = 0
@@ -120,9 +120,6 @@ class Tablero(Pieza):
           or (self.cambio_variable(evaluar[1].posicion_x) == evaluar[1].posicion_y      #Condicion para que sean iguales en diagonal izq ab, der arr
           and self.cambio_variable(evaluar[2].posicion_x) == evaluar[2].posicion_y
           and self.cambio_variable(evaluar[3].posicion_x) == evaluar[3].posicion_y))):
-      print((3<= self.cambio_variable(evaluar[1].posicion_x)*evaluar[1].posicion_y <=4)   #Condicion para que sean iguales en diagonal izq arr, der ab
-          and (3<= self.cambio_variable(evaluar[2].posicion_x)*evaluar[2].posicion_y <=4)
-          and (3<= self.cambio_variable(evaluar[3].posicion_x)*evaluar[3].posicion_y <=4))
       return 1
     else:
       return 0
@@ -194,7 +191,6 @@ class Tablero(Pieza):
       }
     condition3 = True
     contador = 0
-    print(self.turno)
 
     while condition3:
       contador += 1
@@ -210,7 +206,6 @@ class Tablero(Pieza):
       while condition_eleccion:
         try:
           eleccion = int(input(f"---------------------\nIngrese el numero de la pieza que desea colocar en el tablero: "))
-          print(eleccion)
           if eleccion in diccionario_turno:
             condition_eleccion = False
           else:
@@ -226,15 +221,17 @@ class Tablero(Pieza):
           continue
 
         if self.insertar_pieza(diccionario_turno[eleccion], posicion) == 1:
+          self.consulta()
           condition_insertar = False
       del diccionario_turno[eleccion]
 
-      self.consulta()
 
       if contador >= 5 and self.movimientos_bloqueados() == 0:
         break
       if self.tres_enlinea() == 1 or contador == 6:
         break
+      
+      
 
     return self.matriz
 
